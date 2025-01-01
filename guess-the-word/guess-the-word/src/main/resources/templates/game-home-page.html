@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>GuessTheWord</title>
+
+    <script th:inline="javascript">
+
+        window.onload = function checkIfGameOver() {
+                        var numberOfTriesRemaining = [[${triesLeft}]];
+                        if(numberOfTriesRemaining === 0) {
+                            alert("Game Over");
+                            document.getElementById('guessedChar').disabled = true;
+                            document.getElementById('try').disabled = true;
+                        }
+
+                        var ret = [[${wordToDisplay}]];
+                        if(!ret.includes("_")){
+                          alert("Congratulations! You won the game!");
+                          document.getElementById('guessedChar').disabled = true;
+                          document.getElementById('try').disabled = true;
+                        }
+
+                    }
+
+        function reloadGame() {
+
+            window.location.href = "http://localhost:8080/reload";
+
+        }
+
+        function checkChar() {
+            var textbox = document.getElementById('guessedChar').value;
+            if(textbox.length!=1) {
+                alert('You must enter only 1 character!');
+            }
+
+        }
+
+    </script>
+
+</head>
+<body>
+<h1 align="center">Guess the Word</h1>
+<h2 align="center" th:text="${wordToDisplay}">show a random word here</h2>
+<h2 align="right" th:text="'Tries Remaining : ' + ${triesLeft}">show number of tries left here</h2>
+<hr/>
+<input type="button" value="reload" id="reload" style="float:right;" onclick="reloadGame();">
+
+
+<div align="center">
+    <form action="game-home" method="GET">
+        <label>Guess a Char : </label>
+        <input type="text" name="guessedChar" id="guessedChar"/>
+        <input type="submit" value="try" id="try" onclick="checkChar()"/>
+    </form>
+</div>
+
+</body>
+</html>
